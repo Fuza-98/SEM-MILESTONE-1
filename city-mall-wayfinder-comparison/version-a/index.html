@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#152d47">
+  <title>City Mall Wayfinder | Indoor Directory Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="Wayfinder home">
+        <span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 30 16 16 30 2 16Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M8 17 15 10 20 16 25 11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>
+        <span class="brand-text"><strong>CITY<span>MALL</span></strong><small>INTERACTIVE DIRECTORY</small></span>
+      </a>
+      <div class="topbar-center"><span class="status-dot"></span> INDOOR WAYFINDING DEMO <span class="topbar-separator">/</span> PHASE 1 &amp; 2 <span class="demo-pill">SAMPLE DATA</span></div>
+      <button id="helpButton" class="help-button" type="button" aria-label="How to use the map"><span class="help-icon">?</span><span>Map guide</span></button>
+    </header>
+
+    <div class="workspace">
+      <aside class="sidebar" aria-label="Directory controls">
+        <div class="sidebar-intro"><span class="eyebrow">EXPLORE THE MALL <span class="eyebrow-line"></span></span><h1>Find your<br><em>next stop.</em></h1><p>Browse places and get clear directions between any two locations.</p></div>
+        <div class="tab-switcher" role="tablist" aria-label="Wayfinder mode">
+          <button id="tabDirections" class="tab active" type="button" role="tab" aria-selected="true" aria-controls="directionsPanel">↗ <span>Directions</span></button>
+          <button id="tabBrowse" class="tab" type="button" role="tab" aria-selected="false" aria-controls="browsePanel">▦ <span>Browse places</span></button>
+        </div>
+
+        <section id="directionsPanel" class="sidebar-panel" role="tabpanel" aria-labelledby="tabDirections">
+          <div class="section-heading"><h2>Plan your route</h2><span class="minor-label">POINT TO POINT</span></div>
+          <div class="trip-fields">
+            <div class="journey-thread" aria-hidden="true"><span class="thread-origin"></span><span class="thread-line"></span><span class="thread-destination"></span></div>
+            <div class="trip-inputs">
+              <div class="field-wrap"><label for="fromInput">STARTING POINT</label><input id="fromInput" class="location-input" autocomplete="off" spellcheck="false" placeholder="Choose starting point" aria-controls="fromSuggestions" aria-autocomplete="list"><button id="clearFrom" class="field-clear" type="button" aria-label="Clear starting point">×</button><div id="fromSuggestions" class="suggestions" role="listbox" hidden></div></div>
+              <div class="field-wrap"><label for="toInput">DESTINATION</label><input id="toInput" class="location-input" autocomplete="off" spellcheck="false" placeholder="Search a destination" aria-controls="toSuggestions" aria-autocomplete="list"><button id="clearTo" class="field-clear" type="button" aria-label="Clear destination">×</button><div id="toSuggestions" class="suggestions" role="listbox" hidden></div></div>
+            </div>
+          </div>
+          <div class="route-actions"><button class="swap-button" id="swapButton" type="button">⇅ <span>Swap locations</span></button><button class="route-button" id="routeButton" type="button">Find route <span>→</span></button></div>
+          <div id="routeResult" class="route-result" aria-live="polite"><div class="empty-route"><span class="empty-route-icon">↗</span><strong>Ready when you are</strong><p>Choose your starting point and destination to see an indoor walking route.</p></div></div>
+          <div class="sidebar-footnote"><span class="mini-cross">✧</span><p>Walking paths and distances in this demo are illustrative. Not for real-world navigation.</p></div>
+        </section>
+
+        <section id="browsePanel" class="sidebar-panel" role="tabpanel" aria-labelledby="tabBrowse" hidden>
+          <div class="section-heading"><h2>Browse locations</h2><span id="resultCount" class="minor-label">0 PLACES</span></div>
+          <div class="browse-search-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><input type="search" id="browseSearch" placeholder="Search shops or facilities" aria-label="Search places"></div>
+          <div id="filterChips" class="filter-chips" aria-label="Filter by category"></div>
+          <div id="placeList" class="place-list"></div>
+        </section>
+        <div class="sidebar-bottom"><span class="signal-icon">⌁</span><span>INDOOR DIRECTORY <strong>·</strong> DEMONSTRATION</span><span class="sidebar-bottom-right">v1.0</span></div>
+      </aside>
+
+      <main class="map-area" aria-label="Interactive floor map">
+        <div class="map-header"><div><div class="map-kicker"><span class="map-kicker-square"></span> INTERACTIVE FLOOR PLAN</div><h2 id="floorHeading">Ground Floor <span class="map-heading-suffix">/ Directory</span></h2></div><div class="map-meta"><span class="map-meta-dot"></span><span>Illustrative map <strong>·</strong> Not to scale</span></div></div>
+        <div class="map-stage" id="mapStage">
+          <div class="map-stage-top"><div id="floorButtons" class="floor-switcher" aria-label="Choose a floor"></div><div class="map-status"><span class="map-status-dot"></span><span id="mapStatus">Select a place to explore</span></div></div>
+          <svg id="mallMap" class="mall-map" viewBox="0 0 1000 700" aria-label="Interactive indoor mall layout" role="img">
+            <defs><pattern id="mapDots" patternUnits="userSpaceOnUse" width="30" height="30"><circle cx="1.5" cy="1.5" r="1.4" fill="#dfe6eb"/></pattern><filter id="mapShadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="9" stdDeviation="14" flood-color="#19334a" flood-opacity=".08"/></filter></defs>
+            <rect x="0" y="0" width="1000" height="700" fill="url(#mapDots)"/>
+            <g id="mapViewport"><g id="mapBase"></g><g id="mapPlaces"></g><g id="mapRoute"></g></g>
+          </svg>
+          <div class="map-zoom" aria-label="Map zoom controls"><button id="zoomIn" type="button" title="Zoom in" aria-label="Zoom in">+</button><button id="resetView" type="button" title="Reset map view" aria-label="Reset map view">⌖</button><button id="zoomOut" type="button" title="Zoom out" aria-label="Zoom out">−</button></div>
+          <div class="map-hint">✥ <span>Drag to move</span><span class="hint-divider">·</span><span>Scroll to zoom</span></div>
+          <div class="map-legend"><span><i class="legend-dot start"></i> Start</span><span><i class="legend-dot end"></i> Destination</span><span><i class="legend-line"></i> Your route</span></div>
+          <div id="placePopup" class="place-popup" hidden></div>
+        </div>
+        <div class="map-footer"><span><span class="tiny-diamond">◇</span> CITY MALL WAYFINDER</span><span>Prototype floor plan for maintainability comparison <strong>·</strong> All locations fictitious</span></div>
+      </main>
+    </div>
+  </div>
+  <dialog id="helpDialog" class="help-dialog"><button id="closeHelp" class="dialog-close" type="button" aria-label="Close help">×</button><span class="eyebrow">QUICK GUIDE</span><h2>Explore with ease.</h2><p>Search locations by name, browse by category, or select any shop directly on the map.</p><div class="help-steps"><div><strong>01</strong><span>Choose a starting point and destination.</span></div><div><strong>02</strong><span>Select <b>Find route</b> to draw a walking path.</span></div><div><strong>03</strong><span>Switch between Ground, Level 1 and Level 2 to follow a multi-floor route.</span></div></div><p class="help-disclaimer">This is an original demonstration of wayfinding concepts, not a reproduction of the mall's official floor plan.</p></dialog>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
